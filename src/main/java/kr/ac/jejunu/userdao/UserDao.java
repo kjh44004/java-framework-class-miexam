@@ -4,15 +4,18 @@ import java.sql.*;
 
 public class UserDao {
 
-    private ConnectionMaker ConnectionMaker;
+    private ConnectionMaker connectionMaker;
 
     public UserDao(ConnectionMaker connectionMaker) {
-        this.ConnectionMaker = connectionMaker;
+        this.connectionMaker = connectionMaker;
+    }
+
+    public UserDao() {
     }
 
     public User get(Long id) throws ClassNotFoundException, SQLException {
 
-        Connection connection = ConnectionMaker.getConnection();
+        Connection connection = connectionMaker.getConnection();
         String sql = "select * from userinfo where id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setLong(1, id);
@@ -33,7 +36,7 @@ public class UserDao {
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = ConnectionMaker.getConnection();
+        Connection connection = connectionMaker.getConnection();
         String sql = "insert into userinfo(id, name, password) values(?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setLong(1, user.getId());
@@ -46,5 +49,9 @@ public class UserDao {
         //지원을 해지한다.
         preparedStatement.close();
         connection.close();
+    }
+
+    public void setConnectionMaker(ConnectionMaker connectionMaker) {
+        this.connectionMaker = connectionMaker;
     }
 }
