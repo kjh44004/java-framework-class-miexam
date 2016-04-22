@@ -13,6 +13,7 @@ public class JdbcContext {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
     private DataSource dataSource;
 
     User jdbcContextWithStatementStrategyForQuery(StatementStrategy statementStrategy) throws SQLException {
@@ -91,4 +92,19 @@ public class JdbcContext {
             }
         }
     }
+
+    void update(final String sql, final Object[] params) throws SQLException {
+        jdbcContextWithStatementStrategyForUpdate(new StatementStrategy() {
+            @Override
+            public PreparedStatement makeStatement(Connection connection) throws SQLException {
+                PreparedStatement preparedStatement;
+                preparedStatement = connection.prepareStatement(sql);
+                for (int i = 1; i <= params.length; i++) {
+                    preparedStatement.setObject(i, params[i - 1]);
+                }
+                return preparedStatement;
+            }
+        });
+    }
 }
+
