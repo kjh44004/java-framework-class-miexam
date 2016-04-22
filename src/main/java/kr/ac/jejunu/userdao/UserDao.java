@@ -48,20 +48,3 @@ public class UserDao {
         connection.close();
     }
 }
-//connection = connectionMaker.getConnection();
-//
-//        String sql = "delete from userinfo where id = ?";
-//        preparedStatement = connection.prepareStatement(sql);
-//        preparedStatement.setLong(1, id);
-//
-//        preparedStatement.executeUpdate();
-
-//connection = connectionMaker.getConnection();
-//
-//        String sql = "update userinfo set name = ?, password = ? where id = ?";
-//        preparedStatement = connection.prepareStatement(sql);
-//        preparedStatement.setString(1, user.getName());
-//        preparedStatement.setString(2, user.getPassword());
-//        preparedStatement.setLong(3, user.getId());
-//
-//        preparedStatement.executeUpdate();
