@@ -2,25 +2,29 @@ package kr.ac.jejunu.userdao;
 
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
+
+    private ConnectionMaker ConnectionMaker;
+
+    public UserDao(){
+        this.ConnectionMaker = new SimpleConnectionMaker();
+    }
 
     public User get(Long id) throws ClassNotFoundException, SQLException {
-        //데이터는어디에?   Mysql
-        //Driver Class Load
-        Connection connection = getConnection();
-        // 쿼리만들고
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from userinfo where id = ?");
+
+        Connection connection = ConnectionMaker.getConnection();
+        String sql = "select * from userinfo where id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setLong(1, id);
-        // 실행
+
         ResultSet resultSet = preparedStatement.executeQuery();
+
         resultSet.next();
-        // 결과매핑
         User user = new User();
         user.setId(resultSet.getLong("id"));
         user.setName(resultSet.getString("name"));
         user.setPassword(resultSet.getString("password"));
 
-        //자원을 해지한다.
         resultSet.close();
         preparedStatement.close();
         connection.close();
@@ -29,10 +33,9 @@ public abstract class UserDao {
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
-        //쿼리를 만들어서
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "insert into userinfo(id, name, password) values(?, ?, ?)");
+        Connection connection = ConnectionMaker.getConnection();
+        String sql = "insert into userinfo(id, name, password) values(?, ?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setLong(1, user.getId());
         preparedStatement.setString(2, user.getName());
         preparedStatement.setString(3, user.getPassword());
@@ -44,6 +47,4 @@ public abstract class UserDao {
         preparedStatement.close();
         connection.close();
     }
-
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
