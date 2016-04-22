@@ -8,9 +8,12 @@
         <property name="username" value="jeju"/>
         <property name="password" value="jejupw"/>
     </bean>
+    <bean id="jdbcContext" class="kr.ac.jejunu.userdao.JdbcContext">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
     <bean id="userDao" class="kr.ac.jejunu.userdao.UserDao">
         <!--<constructor-arg ref="dataSource"/>-->
-        <property name="dataSource" ref="dataSource"/>
+        <property name="jdbcContext" ref="jdbcContext"/>
 
     </bean>
 
