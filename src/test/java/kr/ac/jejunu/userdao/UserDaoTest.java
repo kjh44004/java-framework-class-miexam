@@ -1,6 +1,9 @@
 package kr.ac.jejunu.userdao;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -8,9 +11,16 @@ import java.util.Random;
 import static org.junit.Assert.assertEquals;
 
 public class UserDaoTest {
+    UserDao userDao;
+
+    @Before
+    public void setup(){
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        userDao = context.getBean("userDao", UserDao.class);
+    }
+
     @Test
     public void get() throws SQLException, ClassNotFoundException {
-        UserDao userDao = new DaoFactory().getUserDao();
         Long id = 1L;
         String name = "허윤호";
         String password = "1234";
@@ -33,7 +43,6 @@ public class UserDaoTest {
         user.setName(name);
         user.setPassword(password);
 
-        UserDao userDao = new DaoFactory().getUserDao();
         userDao.add(user);
         User addedUser = userDao.get(id);
         assertEquals(id, addedUser.getId());
