@@ -25,9 +25,9 @@ public class UserDao {
         User user = null;
         try {
             connection = dataSource.getConnection();
-            String sql = "select * from userinfo where id = ?";
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, id);
+            StatementStrategy statementStrategy = new GetUserStatemenetStrategy();
+            preparedStatement = statementStrategy.makeStatement(id, connection);
+//
 
             resultSet = preparedStatement.executeQuery();
 
@@ -72,13 +72,11 @@ public class UserDao {
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
-            String sql = "insert into userinfo(id, name, password) values(?, ?, ?)";
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, user.getId());
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setString(3, user.getPassword());
+            StatementStrategy statementStrategy = new AddUserStatemenetStrategy();
+            preparedStatement = statementStrategy.makeStatement(user, connection);
 
-            preparedStatement.executeUpdate();
+
+             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
@@ -105,9 +103,8 @@ public class UserDao {
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
-            String sql = "delete from userinfo where id = ?";
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, id);
+            StatementStrategy statementStrategy = new DeleteUserStatemenetStrategy();
+            preparedStatement = statementStrategy.makeStatement(id, connection);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -130,4 +127,7 @@ public class UserDao {
             }
         }
     }
+
+
+
 }
