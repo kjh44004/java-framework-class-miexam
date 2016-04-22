@@ -6,8 +6,8 @@ public class UserDao {
 
     private ConnectionMaker ConnectionMaker;
 
-    public UserDao(){
-        this.ConnectionMaker = new SimpleConnectionMaker();
+    public UserDao(ConnectionMaker connectionMaker) {
+        this.ConnectionMaker = connectionMaker;
     }
 
     public User get(Long id) throws ClassNotFoundException, SQLException {

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class UserDaoTest {
     @Test
     public void get() throws SQLException, ClassNotFoundException {
-        UserDao userDao = new UserDao();
+        UserDao userDao = new DaoFactory().getUserDao();
         Long id = 1L;
         String name = "허윤호";
         String password = "1234";
@@ -25,6 +25,7 @@ public class UserDaoTest {
     public void add() throws SQLException, ClassNotFoundException {
         User user = new User();
         Long id = new Random().nextLong();
+        id = id%10000;
         String name = "허윤호";
         String password = "1234";
 
@@ -32,7 +33,7 @@ public class UserDaoTest {
         user.setName(name);
         user.setPassword(password);
 
-        UserDao userDao = new UserDao();
+        UserDao userDao = new DaoFactory().getUserDao();
         userDao.add(user);
         User addedUser = userDao.get(id);
         assertEquals(id, addedUser.getId());
